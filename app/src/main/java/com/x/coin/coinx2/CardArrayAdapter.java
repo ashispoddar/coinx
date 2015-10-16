@@ -57,7 +57,9 @@ public class CardArrayAdapter extends ArrayAdapter<CardInfo> {
         mCardExp.setText(card.getExpiry());
         mCardNumber.setText(card.getCardNumber());
 
-        int cardImageId = -1;
+        //// TODO: 10/16/15 : dynamica allocation is failing when scrolling, need to debug and fix 
+        int cardImageId = R.drawable.card_background_mastercard;
+        /*
         switch(card.getCardImage()) {
             case "card_background_visa.png":
                 cardImageId = R.drawable.card_background_visa;
@@ -75,7 +77,7 @@ public class CardArrayAdapter extends ArrayAdapter<CardInfo> {
             default :
                 cardImageId = -1;
                 break;
-        }
+        }*/
         if(cardImageId != -1)
             mCardLayout.setBackground(getContext().getResources().getDrawable(cardImageId));
     }
