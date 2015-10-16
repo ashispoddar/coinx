@@ -2,16 +2,21 @@ package com.x.coin.coinx2.model;
 
 public class CardInfo {
 
-    String name;
+    String firstName;
+    String lastName;
+    String cardImage;
     String cardNumber;
     String expiry;
 
     public String getName() {
-        return name;
+        return firstName + " " + lastName ;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getCardNumber() {
@@ -29,11 +34,24 @@ public class CardInfo {
     public void setExpiry(String expiry) {
         this.expiry = expiry;
     }
+    public String getCardImage() {
+        return cardImage;
+    }
 
-    public CardInfo(String name, String cardNumber, String expiry)
+    public void setCardImage(String cardImage) {
+        this.cardImage = cardImage;
+    }
+    public CardInfo(String firstName, String lastName, String cardImage,String cardNumber, String expiry)
     {
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.cardNumber = cardNumber;
         this.expiry = expiry;
+
+        int pos = cardImage.lastIndexOf("/");
+        if(pos != -1) {
+            this.cardImage = cardImage.substring(pos+1);
+        }
     }
+
 }

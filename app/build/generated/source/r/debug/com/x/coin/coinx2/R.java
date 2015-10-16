@@ -1300,12 +1300,15 @@ containing a value of this type.
         public static final int abc_textfield_search_default_mtrl_alpha=0x7f020031;
         public static final int abc_textfield_search_material=0x7f020032;
         public static final int card_american_express_48x30=0x7f020033;
-        public static final int card_background_visa=0x7f020034;
-        public static final int card_discover_network_48x30=0x7f020035;
-        public static final int card_jcb_48x30=0x7f020036;
-        public static final int card_maestro_48x30=0x7f020037;
-        public static final int card_master_48x30=0x7f020038;
-        public static final int card_visa_48x30=0x7f020039;
+        public static final int card_background_amex=0x7f020034;
+        public static final int card_background_discover=0x7f020035;
+        public static final int card_background_mastercard=0x7f020036;
+        public static final int card_background_visa=0x7f020037;
+        public static final int card_discover_network_48x30=0x7f020038;
+        public static final int card_jcb_48x30=0x7f020039;
+        public static final int card_maestro_48x30=0x7f02003a;
+        public static final int card_master_48x30=0x7f02003b;
+        public static final int card_visa_48x30=0x7f02003c;
     }
     public static final class id {
         public static final int action_bar=0x7f0c0031;

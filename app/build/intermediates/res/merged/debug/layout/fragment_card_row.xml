@@ -15,7 +15,6 @@
         android:layout_marginTop="10dp"
         android:visibility="visible"
         android:weightSum="1"
-        android:background="@drawable/card_background_visa"
         android:layout_weight="0.04">
 
         <TextView
