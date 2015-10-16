@@ -1,24 +1,25 @@
 package com.x.coin.coinx2;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.x.coin.coinx2.model.AsyncResult;
+import com.x.coin.coinx2.model.CardInfo;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +51,61 @@ public class CardList extends ActionBarActivity {
         CardInfo card4 = new CardInfo("John Doe" , "2222 2999 9999 9999" , "12 / 16");
         mCardList.add(card4);
 
-        //mCardList = getCards();
+        getCards();
 
         mCardTableAdapter = new CardArrayAdapter(this, mCardList);
 
         mCardListView.setAdapter(mCardTableAdapter);
 
+    }
+    public List<CardInfo> getCards() {
+        List<CardInfo> cards = new ArrayList<CardInfo>();
+        CardService async_task = new CardService();
+        async_task.execute();
+        return cards;
+    }
+    private class CardService extends AsyncTask<Void, Void, AsyncResult> {
+
+        @Override
+        protected AsyncResult doInBackground(Void... params) {
+            AsyncResult result = getCardsFromServer();
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(AsyncResult result) {
+            processCardServiceResponse(result);
+        }
+    }
+    void processCardServiceResponse(AsyncResult result){
+
+    }
+    private AsyncResult getCardsFromServer() {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpConnectionParams.setConnectionTimeout(httpClient.getParams(), 15000);
+        HttpConnectionParams.setSoTimeout(httpClient.getParams(), 15000);
+        //// TODO: 10/16/15 : Read from config file
+        HttpGet httpGet = new HttpGet("http://s3.amazonaws.com/mobile.coin.vc/ios/assignment/data.json");
+
+        String result = null;
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            result = EntityUtils.toString(httpResponse.getEntity());
+        } catch (ClientProtocolException e) {
+            return new AsyncResult(false, e.getCause());
+        } catch (IOException e) {
+            return new AsyncResult(false, e.getCause());
+        }
+        JSONObject cardsJSON;
+
+        try {
+
+            cardsJSON = new JSONObject(result);
+
+        } catch (JSONException e) {
+            return new AsyncResult(false, e.getCause());
+        }
+        return new AsyncResult(true, cardsJSON);
     }
 
 }

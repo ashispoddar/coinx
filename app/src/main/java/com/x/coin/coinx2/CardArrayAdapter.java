@@ -1,12 +1,13 @@
 package com.x.coin.coinx2;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.x.coin.coinx2.model.CardInfo;
 
 import java.util.List;
 

@@ -3,4 +3,4 @@
     android:name="com.x.coin.coinx2.CardListFragment" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:layout="@layout/fragment_card_list"
     />
-<!-- From: file:/Users/ashispoddar/Desktop/develop/coinx2/app/src/main/res/layout/activity_card_list.xml -->
+<!-- From: file:/Users/ashispoddar/projects/jobs/coinx/app/src/main/res/layout/activity_card_list.xml -->

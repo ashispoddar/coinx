@@ -1,4 +1,4 @@
-package com.x.coin.coinx2;
+package com.x.coin.coinx2.model;
 
 public class CardInfo {
 
