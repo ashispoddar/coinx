@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+
+    <LinearLayout
+        android:id="@+id/ll_cc"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:weightSum="1"
+        android:background="@drawable/card_background_visa"
+        android:layout_weight="0.04">
+
+        <TextView
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:text="1234 5678 9012 3456"
+            android:id="@+id/textViewCardNumber"
+            android:layout_weight="0.12"
+            android:singleLine="true"
+            android:textStyle="normal"
+            android:password="false"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="238dp"
+            android:layout_height="40dp"
+            android:text="Ashis Poddar"
+            android:id="@+id/textViewName"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:password="false"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="5dp"
+            android:textSize="20dp"
+            android:layout_marginLeft="25dp"
+            android:gravity="center_vertical" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="bottom"
+            android:layout_marginBottom="10dp">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="GOOD \nTHRU"
+                android:id="@+id/textView3"
+                android:maxLines="2"
+                android:minLines="2"
+                android:layout_marginLeft="25dp"
+                android:textSize="10dp"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="01 / 17"
+                android:id="@+id/textViewExpiry"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
