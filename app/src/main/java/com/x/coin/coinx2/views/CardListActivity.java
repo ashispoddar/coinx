@@ -41,6 +41,7 @@ public class CardListActivity extends ActionBarActivity {
 
         //setup DB if not already, would go to main app
         mDBHelper = new LocalDBHelper(getBaseContext());
+        //mDBHelper.onUpgrade(mDBHelper.getWritableDatabase(),1,2);
         //load cards either from backend or locally
         populateCards();
 

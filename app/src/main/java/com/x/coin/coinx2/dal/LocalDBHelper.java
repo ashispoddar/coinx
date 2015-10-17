@@ -15,8 +15,8 @@ import com.x.coin.coinx2.model.CardInfo;
 public class LocalDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "COINX.DB";
     private static final String DATABASE_TABLE_CREATE = "CREATE TABLE CARDS (id INTEGER PRIMARY KEY,guid TEXT UNIQUE,fname TEXT,lname TEXT,expiry TEXT,card_alias TEXT,card_type TEXT, time_created TEXT, time_updated TEXT)";
-    private static final String DATABASE_TABLE_CREATE_INDEX = "CREATE INDEX guidIndex ON COINX.DB (guid);";
-    private static final String DATABASE_TABLE_DELETE = "DROP TABLE IF EXISTS COINX.DB";
+    private static final String DATABASE_TABLE_CREATE_INDEX = "CREATE INDEX guidIndex ON CARDS(guid);";
+    private static final String DATABASE_TABLE_DELETE = "DROP TABLE IF EXISTS CARDS";
 
     //// TODO: 10/16/15 :make sure we have index on guid...
     private static final String COL_NAME_ID = "id";
@@ -35,6 +35,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(DATABASE_TABLE_CREATE);
         db.execSQL(DATABASE_TABLE_CREATE_INDEX);
     }
