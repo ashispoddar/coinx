@@ -1,4 +1,4 @@
-package com.x.coin.coinx2;
+package com.x.coin.coinx2.views;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.x.coin.coinx2.R;
 import com.x.coin.coinx2.model.CardInfo;
 
 import java.util.List;
@@ -57,8 +58,9 @@ public class CardArrayAdapter extends ArrayAdapter<CardInfo> {
         mCardExp.setText(card.getExpiry());
         mCardNumber.setText(card.getCardNumber());
 
-        //// TODO: 10/16/15 : dynamica allocation is failing when scrolling, need to debug and fix 
+        //// TODO: 10/16/15 : dynamica allocation of images causing memory issue, ned to fix
         int cardImageId = R.drawable.card_background_mastercard;
+
         /*
         switch(card.getCardImage()) {
             case "card_background_visa.png":

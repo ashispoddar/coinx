@@ -1,4 +1,4 @@
-package com.x.coin.coinx2;
+package com.x.coin.coinx2.views;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.ListView;
 
+import com.x.coin.coinx2.R;
+import com.x.coin.coinx2.dal.LocalDBHelper;
 import com.x.coin.coinx2.model.AsyncResult;
 import com.x.coin.coinx2.model.CardInfo;
 
@@ -23,48 +25,46 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class CardList extends ActionBarActivity {
+public class CardListActivity extends ActionBarActivity {
 
     private List<CardInfo> mCardList = new ArrayList<CardInfo>();
     private ListView mCardListView;
     private CardArrayAdapter mCardTableAdapter;
+    private LocalDBHelper mDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_list);
 
-        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+        //setup DB if not already, would go to main app
+        mDBHelper = new LocalDBHelper(getBaseContext());
+        //load cards either from backend or locally
+        populateCards();
 
+        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         // Inflate the layout for this fragment
         mCardListView = (ListView)findViewById(R.id.listViewCards);
-/*
-        CardInfo card = new CardInfo("Ashis Poddar" , "1234 1234 1234 1234" , "12 / 15");
-        mCardList.add(card);
 
-        CardInfo card2  = new CardInfo("Venkat Surya" , "9999 9999 9999 9999" , "12 / 16");
-        mCardList.add(card2);
-
-        CardInfo card3  = new CardInfo("Kanishk parasar" , "2222 2999 9999 9999" , "12 / 16");
-        mCardList.add(card3);
-
-        CardInfo card4 = new CardInfo("John Doe" , "2222 2999 9999 9999" , "12 / 16");
-        mCardList.add(card4);
-*/
-        getCards();
-
+        //set up row adapter
         mCardTableAdapter = new CardArrayAdapter(this, mCardList);
-
         mCardListView.setAdapter(mCardTableAdapter);
 
     }
-    public List<CardInfo> getCards() {
-        List<CardInfo> cards = new ArrayList<CardInfo>();
+    public void addCard2LocalStorage(CardInfo cardInfo) {
+
+        //use GUID to load before insert , if exist , do an update instead
+        CardInfo cardInfoExists = mDBHelper.getCard(cardInfo.getGuid());
+        if(cardInfoExists != null)
+            mDBHelper.updateCard(cardInfo);
+        else
+            mDBHelper.insertCard(cardInfo);
+    }
+    public void populateCards() {
         CardService async_task = new CardService();
         async_task.execute();
-        return cards;
     }
     private class CardService extends AsyncTask<Void, Void, AsyncResult> {
 
@@ -73,7 +73,6 @@ public class CardList extends ActionBarActivity {
             AsyncResult result = getCardsFromServer();
             return result;
         }
-
         @Override
         protected void onPostExecute(AsyncResult result) {
             processCardServiceResponse(result);
@@ -99,9 +98,13 @@ public class CardList extends ActionBarActivity {
                                 String created = card.getString("created");
                                 Boolean enbaled = card.getBoolean("enabled");
                                 String background_image_url = card.getString("background_image_url");
+                                String cardGuid = card.getString("guid");
 
                                 CardInfo cardInfo = new CardInfo(fName, lName, background_image_url,cardNumber,expiryDate);
+                                cardInfo.setGuid(cardGuid);
+
                                 mCardList.add(cardInfo);
+                                addCard2LocalStorage(cardInfo);
                             }
                         }
                         mCardTableAdapter.notifyDataSetChanged();
@@ -114,9 +117,14 @@ public class CardList extends ActionBarActivity {
         }
     }
     private AsyncResult getCardsFromServer() {
+
         HttpClient httpClient = new DefaultHttpClient();
+
+        //// TODO: 10/16/15 : Read from config file
+
         HttpConnectionParams.setConnectionTimeout(httpClient.getParams(), 15000);
         HttpConnectionParams.setSoTimeout(httpClient.getParams(), 15000);
+
         //// TODO: 10/16/15 : Read from config file
         HttpGet httpGet = new HttpGet("http://s3.amazonaws.com/mobile.coin.vc/ios/assignment/data.json");
 
@@ -124,18 +132,23 @@ public class CardList extends ActionBarActivity {
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);
             result = EntityUtils.toString(httpResponse.getEntity());
+
         } catch (ClientProtocolException e) {
+
             return new AsyncResult(false, e.getCause());
+
         } catch (IOException e) {
+
             return new AsyncResult(false, e.getCause());
         }
-        JSONObject cardsJSON;
-
+        //retrieve JSON structure
+        JSONObject cardsJSON = null;
         try {
 
             cardsJSON = new JSONObject(result);
 
         } catch (JSONException e) {
+
             return new AsyncResult(false, e.getCause());
         }
         return new AsyncResult(true, cardsJSON);
