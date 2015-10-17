@@ -71,9 +71,11 @@ public class CardInfo {
         this.cardNumber = cardNumber;
         this.expiry = expiry;
         this.guid = guid;
-        int pos = cardImage.lastIndexOf("/");
-        if(pos != -1) {
-            this.cardImage = cardImage.substring(pos+1);
+        if(cardImage != null) {
+            int pos = cardImage.lastIndexOf("/");
+            if (pos != -1) {
+                this.cardImage = cardImage.substring(pos + 1);
+            }
         }
     }
     public String getType() {

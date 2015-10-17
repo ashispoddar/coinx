@@ -24,7 +24,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 public class CardListActivity extends ActionBarActivity {
 
@@ -32,6 +34,8 @@ public class CardListActivity extends ActionBarActivity {
     private ListView mCardListView;
     private CardArrayAdapter mCardTableAdapter;
     private LocalDBHelper mDBHelper;
+    final SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +61,23 @@ public class CardListActivity extends ActionBarActivity {
     public void addCard2LocalStorage(CardInfo cardInfo) {
 
         //use GUID to load before insert , if exist , do an update instead
-        CardInfo cardInfoExists = mDBHelper.getCard(cardInfo.getGuid());
-        if(cardInfoExists != null)
-            mDBHelper.updateCard(cardInfo);
-        else
-            mDBHelper.insertCard(cardInfo);
+        try {
+            CardInfo cardInfoExists = mDBHelper.getCard(cardInfo.getGuid());
+            if (cardInfoExists != null) {
+                //check whether timeUpdated is recent than what exist in local db
+
+                Date recentUpdateDate = df1.parse(cardInfo.getTimeUpdated());
+                Date lastUpdateDate = df1.parse(cardInfoExists.getTimeUpdated());
+
+                if (recentUpdateDate.after(lastUpdateDate))
+                    mDBHelper.updateCard(cardInfo);
+            } else {
+                mDBHelper.insertCard(cardInfo);
+            }
+        }catch(Exception e) {
+            //// TODO: 10/17/15 handle exception gracefully here
+            String errMsg = e.getLocalizedMessage();
+        }
     }
     public void populateCards() {
         CardService async_task = new CardService();

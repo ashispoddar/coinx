@@ -96,9 +96,11 @@ public class LocalDBHelper extends SQLiteOpenHelper {
             CardInfo cardInfo = new CardInfo(fName, lName, cardType, cardAlias, expiry, guid);
             cardInfo.setTimeCreated(timeCreated);
             cardInfo.setTimeUpdated(timeUpdated);
+            return cardInfo;
         }
         return null;
     }
     public void updateCard(CardInfo cardInfo) {
+
     }
 }
