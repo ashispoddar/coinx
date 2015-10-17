@@ -100,8 +100,9 @@ public class CardListActivity extends ActionBarActivity {
                                 String background_image_url = card.getString("background_image_url");
                                 String cardGuid = card.getString("guid");
 
-                                CardInfo cardInfo = new CardInfo(fName, lName, background_image_url,cardNumber,expiryDate);
-                                cardInfo.setGuid(cardGuid);
+                                CardInfo cardInfo = new CardInfo(fName, lName,
+                                        background_image_url,cardNumber,
+                                        expiryDate,cardGuid);
 
                                 mCardList.add(cardInfo);
                                 addCard2LocalStorage(cardInfo);

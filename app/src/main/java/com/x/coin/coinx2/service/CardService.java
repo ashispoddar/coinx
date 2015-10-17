@@ -56,10 +56,10 @@ public class CardService extends AsyncTask<Void, Void, AsyncResult> {
                                 String background_image_url = card.getString("background_image_url");
                                 String cardGuid = card.getString("guid");
 
-                                CardInfo cardInfo = new CardInfo(fName, lName, background_image_url, cardNumber, expiryDate);
-                                cardInfo.setGuid(cardGuid);
-
-                                //// TODO: 10/17/15 :need to pass these variables rather than memeber  
+                                CardInfo cardInfo = new CardInfo(   fName, lName,
+                                                                    background_image_url, cardNumber,
+                                                                    expiryDate,cardGuid);
+                                //// TODO: 10/17/15 :need to pass these variables rather than memeber
                                 //mCardList.add(cardInfo);
                                 //addCard2LocalStorage(cardInfo);
                             }

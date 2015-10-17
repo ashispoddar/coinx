@@ -56,13 +56,18 @@ public class CardInfo {
     public void setCardImage(String cardImage) {
         this.cardImage = cardImage;
     }
-    public CardInfo(String firstName, String lastName, String cardImage,String cardNumber, String expiry)
+    public CardInfo(String firstName,
+                    String lastName,
+                    String cardImage,
+                    String cardNumber,
+                    String expiry,
+                    String guid)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.cardNumber = cardNumber;
         this.expiry = expiry;
-
+        this.guid = guid;
         int pos = cardImage.lastIndexOf("/");
         if(pos != -1) {
             this.cardImage = cardImage.substring(pos+1);
