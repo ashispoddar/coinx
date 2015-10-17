@@ -95,14 +95,17 @@ public class CardListActivity extends ActionBarActivity {
                                 String fName = card.getString("first_name");
                                 String lName = card.getString("last_name");
                                 String expiryDate = card.getString("expiration_date");
-                                String created = card.getString("created");
-                                Boolean enbaled = card.getBoolean("enabled");
+                                Boolean enabled = card.getBoolean("enabled");
                                 String background_image_url = card.getString("background_image_url");
                                 String cardGuid = card.getString("guid");
+                                String timeCreated = card.getString("created");
+                                String timeUpdated = card.getString("updated");
 
                                 CardInfo cardInfo = new CardInfo(fName, lName,
                                         background_image_url,cardNumber,
                                         expiryDate,cardGuid);
+                                cardInfo.setTimeCreated(timeCreated);
+                                cardInfo.setTimeUpdated(timeUpdated);
 
                                 mCardList.add(cardInfo);
                                 addCard2LocalStorage(cardInfo);

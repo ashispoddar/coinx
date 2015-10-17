@@ -10,6 +10,9 @@ public class CardInfo {
     String cardNumber;
     String expiry;
     String type;
+    String timeCreated;
+    String timeUpdated;
+
 
     public String getName() {
         return firstName + " " + lastName ;
@@ -87,4 +90,20 @@ public class CardInfo {
     public void setGuid(String guid) {
         this.guid = guid;
     }
+    public String getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(String timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public String getTimeUpdated() {
+        return timeUpdated;
+    }
+
+    public void setTimeUpdated(String timeUpdated) {
+        this.timeUpdated = timeUpdated;
+    }
+
 }

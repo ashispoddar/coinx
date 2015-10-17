@@ -14,7 +14,7 @@ import com.x.coin.coinx2.model.CardInfo;
 
 public class LocalDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "COINX.DB";
-    private static final String DATABASE_TABLE_CREATE = "CREATE TABLE CARDS (id INTEGER PRIMARY KEY,guid TEXT UNIQUE,fname TEXT,lname TEXT,expiry TEXT,card_alias TEXT,card_type TEXT)";
+    private static final String DATABASE_TABLE_CREATE = "CREATE TABLE CARDS (id INTEGER PRIMARY KEY,guid TEXT UNIQUE,fname TEXT,lname TEXT,expiry TEXT,card_alias TEXT,card_type TEXT, time_created TEXT, time_updated TEXT)";
     private static final String DATABASE_TABLE_CREATE_INDEX = "CREATE INDEX guidIndex ON COINX.DB (guid);";
     private static final String DATABASE_TABLE_DELETE = "DROP TABLE IF EXISTS COINX.DB";
 
@@ -26,6 +26,8 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     private static final String COL_NAME_EXPIRY = "expiry";
     private static final String COL_NAME_CARDALIAS = "card_alias";
     private static final String COL_NAME_CARDTYPE = "card_type";
+    private static final String COL_NAME_TIMECREATED = "time_created";
+    private static final String COL_NAME_TIMEUPDATED = "time_updated";
 
 
 
@@ -55,6 +57,8 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         values.put(COL_NAME_EXPIRY, cardInfo.getExpiry());
         values.put(COL_NAME_CARDALIAS, cardInfo.getCardNumber());
         values.put(COL_NAME_CARDTYPE, cardInfo.getType());
+        values.put(COL_NAME_TIMECREATED, cardInfo.getTimeCreated());
+        values.put(COL_NAME_TIMEUPDATED, cardInfo.getTimeUpdated());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert("CARDS", "", values);
@@ -63,7 +67,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     public CardInfo getCard(String cardGuid) {
 
         SQLiteDatabase db = getReadableDatabase();
-        String[] projection = {"id","fname","lname","guid","card_alias","card_type", "expiry"};
+        String[] projection = {"id","fname","lname","guid","card_alias","card_type", "expiry", "time_created","time_updated"};
         String selection = "guid=?";
         String[] selectionArgs = { cardGuid };
 
@@ -83,9 +87,14 @@ public class LocalDBHelper extends SQLiteOpenHelper {
             String lName = cursor.getString(cursor.getColumnIndexOrThrow("lname"));
             String expiry = cursor.getString(cursor.getColumnIndexOrThrow("expiry"));
             String guid = cursor.getString(cursor.getColumnIndexOrThrow("guid"));
-            String card_alias = cursor.getString(cursor.getColumnIndexOrThrow("card_alias"));
-            String card_type = cursor.getString(cursor.getColumnIndexOrThrow("card_type"));
-            return new CardInfo(fName, lName, card_type, card_alias, expiry, guid);
+            String cardAlias = cursor.getString(cursor.getColumnIndexOrThrow("card_alias"));
+            String cardType = cursor.getString(cursor.getColumnIndexOrThrow("card_type"));
+            String timeCreated = cursor.getString(cursor.getColumnIndexOrThrow("time_created"));
+            String timeUpdated = cursor.getString(cursor.getColumnIndexOrThrow("time_updated"));
+
+            CardInfo cardInfo = new CardInfo(fName, lName, cardType, cardAlias, expiry, guid);
+            cardInfo.setTimeCreated(timeCreated);
+            cardInfo.setTimeUpdated(timeUpdated);
         }
         return null;
     }
