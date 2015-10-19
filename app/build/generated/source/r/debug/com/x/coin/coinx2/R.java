@@ -1324,7 +1324,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0c002e;
         public static final int action_mode_bar_stub=0x7f0c002d;
         public static final int action_mode_close_button=0x7f0c0020;
-        public static final int action_settings=0x7f0c0046;
+        public static final int action_settings=0x7f0c0047;
         public static final int activity_chooser_view_content=0x7f0c0021;
         public static final int always=0x7f0c0016;
         public static final int beginning=0x7f0c0013;
@@ -1348,11 +1348,12 @@ containing a value of this type.
         public static final int listMode=0x7f0c0009;
         public static final int listViewCards=0x7f0c0040;
         public static final int list_item=0x7f0c0025;
-        public static final int ll_cc=0x7f0c0041;
+        public static final int ll_cc=0x7f0c0042;
         public static final int middle=0x7f0c0015;
         public static final int never=0x7f0c0019;
         public static final int none=0x7f0c000e;
         public static final int normal=0x7f0c000a;
+        public static final int progressBar=0x7f0c0041;
         public static final int progress_circular=0x7f0c0005;
         public static final int progress_horizontal=0x7f0c0006;
         public static final int radio=0x7f0c002b;
@@ -1373,10 +1374,10 @@ containing a value of this type.
         public static final int split_action_bar=0x7f0c0007;
         public static final int submit_area=0x7f0c003c;
         public static final int tabMode=0x7f0c000b;
-        public static final int textView3=0x7f0c0044;
-        public static final int textViewCardNumber=0x7f0c0042;
-        public static final int textViewExpiry=0x7f0c0045;
-        public static final int textViewName=0x7f0c0043;
+        public static final int textView3=0x7f0c0045;
+        public static final int textViewCardNumber=0x7f0c0043;
+        public static final int textViewExpiry=0x7f0c0046;
+        public static final int textViewName=0x7f0c0044;
         public static final int title=0x7f0c0027;
         public static final int up=0x7f0c0008;
         public static final int useLogo=0x7f0c0012;
@@ -1440,6 +1441,8 @@ containing a value of this type.
         public static final int abc_toolbar_collapse_description=0x7f06000f;
         public static final int action_settings=0x7f060010;
         public static final int app_name=0x7f060011;
+        public static final int card_service_url=0x7f060012;
+        public static final int generic_service_error=0x7f060013;
     }
     public static final class style {
         /**  Customize your theme here. 

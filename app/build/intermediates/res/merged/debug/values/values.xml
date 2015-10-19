@@ -163,6 +163,8 @@
     <eat-comment/>
     <string name="action_settings">Settings</string>
     <string name="app_name">coinx2</string>
+    <string name="card_service_url">http://s3.amazonaws.com/mobile.coin.vc/ios/assignment/data.json</string>
+    <string name="generic_service_error">Service Error ! Please try again later.</string>
     <!-- From: file:/Users/ashispoddar/projects/jobs/coinx.working/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

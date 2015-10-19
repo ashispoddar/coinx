@@ -1,10 +1,14 @@
 package com.x.coin.coinx2.views;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.x.coin.coinx2.R;
 import com.x.coin.coinx2.dal.LocalDBHelper;
@@ -34,7 +38,9 @@ public class CardListActivity extends ActionBarActivity {
     private ListView mCardListView;
     private CardArrayAdapter mCardTableAdapter;
     private LocalDBHelper mDBHelper;
-    final SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+    private ProgressBar mSpinner;
+    private Context mAppContext;
+    final static SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
 
     @Override
@@ -43,9 +49,13 @@ public class CardListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_list);
 
+        mAppContext = getApplicationContext();
         //setup DB if not already, would go to main app
         mDBHelper = new LocalDBHelper(getBaseContext());
         //mDBHelper.onUpgrade(mDBHelper.getWritableDatabase(),1,2);
+        mSpinner = (ProgressBar)findViewById(R.id.progressBar);
+        mSpinner.setVisibility(View.INVISIBLE);
+
         //load cards either from backend or locally
         populateCards();
 
@@ -80,6 +90,7 @@ public class CardListActivity extends ActionBarActivity {
         }
     }
     public void populateCards() {
+        mSpinner.setVisibility(View.VISIBLE);
         CardService async_task = new CardService();
         async_task.execute();
     }
@@ -96,6 +107,7 @@ public class CardListActivity extends ActionBarActivity {
         }
     }
     void processCardServiceResponse(AsyncResult result){
+
         if(result.isSuccess()) {
 
             try {
@@ -135,24 +147,31 @@ public class CardListActivity extends ActionBarActivity {
                 //ignore the for now
                 //// TODO: 10/16/15 add proper error handling
             }
+        }else {
+            //service error condition , so we gracefully handle with an alert/toast
+
+            String serviceError = getString(R.string.generic_service_error);
+            Toast toast = Toast.makeText(mAppContext, serviceError, Toast.LENGTH_SHORT);
+            toast.show();
         }
+        mSpinner.setVisibility(View.GONE);
     }
     private AsyncResult getCardsFromServer() {
 
-        HttpClient httpClient = new DefaultHttpClient();
-
-        //// TODO: 10/16/15 : Read from config file
-
-        HttpConnectionParams.setConnectionTimeout(httpClient.getParams(), 15000);
-        HttpConnectionParams.setSoTimeout(httpClient.getParams(), 15000);
-
-        //// TODO: 10/16/15 : Read from config file
-        HttpGet httpGet = new HttpGet("http://s3.amazonaws.com/mobile.coin.vc/ios/assignment/data.json");
-
-        String result = null;
         try {
+            HttpClient httpClient = new DefaultHttpClient();
+            //// TODO: 10/16/15 : Read from config file
+            HttpConnectionParams.setConnectionTimeout(httpClient.getParams(), 15000);
+            HttpConnectionParams.setSoTimeout(httpClient.getParams(), 15000);
+
+            String cardServiceUrl = getString(R.string.card_service_url);
+            HttpGet httpGet = new HttpGet(cardServiceUrl);
+
+
             HttpResponse httpResponse = httpClient.execute(httpGet);
-            result = EntityUtils.toString(httpResponse.getEntity());
+            String result = EntityUtils.toString(httpResponse.getEntity());
+            JSONObject cardsJSON = new JSONObject(result);
+            return new AsyncResult(true, cardsJSON);
 
         } catch (ClientProtocolException e) {
 
@@ -161,18 +180,10 @@ public class CardListActivity extends ActionBarActivity {
         } catch (IOException e) {
 
             return new AsyncResult(false, e.getCause());
-        }
-        //retrieve JSON structure
-        JSONObject cardsJSON = null;
-        try {
-
-            cardsJSON = new JSONObject(result);
-
-        } catch (JSONException e) {
+        }catch (JSONException e) {
 
             return new AsyncResult(false, e.getCause());
         }
-        return new AsyncResult(true, cardsJSON);
     }
 
 }

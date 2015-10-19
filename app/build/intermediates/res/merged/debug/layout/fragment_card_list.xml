@@ -12,5 +12,12 @@
         android:layout_alignParentBottom="true"
         android:background="@android:color/black"
         android:layout_alignParentTop="true" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
 <!-- From: file:/Users/ashispoddar/projects/jobs/coinx.working/app/src/main/res/layout/fragment_card_list.xml -->
