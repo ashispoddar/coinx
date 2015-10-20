@@ -4,14 +4,8 @@ import android.os.AsyncTask;
 
 import com.x.coin.coinx2.model.AsyncResult;
 import com.x.coin.coinx2.model.CardInfo;
+import com.x.coin.coinx2.model.ServiceError;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +67,10 @@ public class CardService extends AsyncTask<Void, Void, AsyncResult> {
             }
         }
     }
-
+    private AsyncResult getCardsFromServer() {
+        return new AsyncResult(false,new ServiceError(-1,"Unknown Error"));
+    }
+/*
     private AsyncResult getCardsFromServer() {
 
         HttpClient httpClient = new DefaultHttpClient();
@@ -111,4 +108,5 @@ public class CardService extends AsyncTask<Void, Void, AsyncResult> {
         }
         return new AsyncResult(true, cardsJSON);
     }
+    */
 }

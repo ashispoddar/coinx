@@ -14,19 +14,19 @@ import com.x.coin.coinx2.R;
 import com.x.coin.coinx2.dal.LocalDBHelper;
 import com.x.coin.coinx2.model.AsyncResult;
 import com.x.coin.coinx2.model.CardInfo;
+import com.x.coin.coinx2.model.ServiceError;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.Reader;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -158,6 +158,75 @@ public class CardListActivity extends ActionBarActivity {
     }
     private AsyncResult getCardsFromServer() {
 
+        InputStream is = null;
+        // Only display the first 500 characters of the retrieved
+        // web page content.
+        int len = 500;
+
+        try {
+            String cardServiceUrl = getString(R.string.card_service_url);
+            URL url = new URL(cardServiceUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            //setup the connection object
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            //conn.setDoOutput(true);
+
+            //connect the backend service
+            conn.connect();
+
+            int statusCode = conn.getResponseCode();
+            is = conn.getInputStream();
+            // Convert the InputStream into a string
+            String result = readIt(is, len);
+            JSONObject jsonData = new JSONObject(result);
+            if(statusCode == 200) {
+                return new AsyncResult(true, jsonData);
+            }else {
+                //for 400 & 500
+                //todo : aysnc result to throw exception if we dont have proper JSON
+                return new AsyncResult(false, jsonData);
+            }
+            // Makes sure that the InputStream is closed after the app is
+            // finished using it.
+        } catch (Exception e) {
+            //return service error
+            return new AsyncResult(false,new ServiceError(-1,e.getMessage()));
+
+        }finally {
+
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            }catch(Exception e){
+                //ignore the error here
+            }
+        }
+    }
+    public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
+
+        /*Reader reader = new InputStreamReader(stream, "UTF-8");
+        char[] buffer = new char[len];
+        reader.read(buffer);
+        return new String(buffer);
+        */
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line+"\n");
+        }
+        br.close();
+        return sb.toString();
+    }
+    /*
+    private AsyncResult getCardsFromServer() {
+
         try {
             HttpClient httpClient = new DefaultHttpClient();
             //// TODO: 10/16/15 : Read from config file
@@ -185,5 +254,5 @@ public class CardListActivity extends ActionBarActivity {
             return new AsyncResult(false, e.getCause());
         }
     }
-
+    */
 }

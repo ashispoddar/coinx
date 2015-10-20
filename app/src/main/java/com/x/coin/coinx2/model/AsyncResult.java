@@ -9,11 +9,14 @@ public class AsyncResult {
 
     boolean mSuccess;
     Object mData;
-    ServiceError error;
+    ServiceError mError;
 
     public AsyncResult(boolean success, Object data) {
         mSuccess = success;
         mData = data;
+        if(!mSuccess) {
+            //convert the data and service error
+        }
     }
 
     public boolean isSuccess() {
@@ -33,10 +36,10 @@ public class AsyncResult {
     }
 
     public ServiceError getServerError() {
-        return error;
+        return mError;
     }
 
     public void setServerError(ServiceError error) {
-        this.error = error;
+        this.mError = error;
     }
 }
